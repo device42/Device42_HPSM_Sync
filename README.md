@@ -1,4 +1,4 @@
-# device42tohpsm
+# Device42_HPSM_Sync
 Script syncs Device42 (http://www.device42.com) data to HPSM.
 This script was tested with HPSM ( 9.40 ) and Device42 ( 12.0.0 )
 
@@ -9,8 +9,14 @@ Take the file `conf.sample` and rename it to `conf`. Then change the settings to
 # HPSM Configuration
 Operator should has access to the REST API.
 API should allow 'Computer' and 'NetworkDevice' access with add/save actions.
+
+
 *IMPORTANT*
-Open Database Dictionary and add field (type 'number', name 'device42.id') to the models 'computer' and 'networkcomponents'.
+
+
+**Open Database Dictionary and add field (type 'number', name 'device42.id') to the models 'computer' and 'networkcomponents'.**
+
+
 
 Both endpoints should allow to add\update fields:
 

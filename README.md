@@ -7,7 +7,7 @@ This script was tested with HPSM ( 9.40 ) and Device42 ( 12.0.0 )
 Take the file `conf.sample` and rename it to `conf`. Then change the settings to correct ones.
 
 # HPSM Configuration
-Operator should has access to the REST API.
+Operator should have access to the REST API.
 API should allow 'Computer' and 'NetworkDevice' access with add/save actions.
 
 

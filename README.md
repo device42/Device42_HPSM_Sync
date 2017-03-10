@@ -7,19 +7,13 @@ This script was tested with HPSM ( 9.40 ) and Device42 ( 12.0.0 )
 Take the file `conf.sample` and rename it to `conf`. Then change the settings to correct ones.
 
 # HPSM Configuration
-Operator should have access to the REST API.
-API should allow 'Computer' and 'NetworkDevice' access with add/save actions.
+1.Open the Database Dictionary and add field (type ‘number, name ‘device42.id’) to both the models ‘computer’ and ‘networkcomponents'
 
 
-*IMPORTANT*
+2.Operator should have access to the REST API. The API should allow “Computer” and “NetworkDevice” access, allowing both ‘add’ and ‘save’ actions
 
 
-**Open Database Dictionary and add field (type 'number', name 'device42.id') to the models 'computer' and 'networkcomponents'.**
-
-
-
-Both endpoints should allow to add\update fields:
-
+3.Both endpoints must allow access to add & update all of the fields listed on this page.
 ```
 'logical.name'
 'machine.name'
@@ -45,6 +39,9 @@ Both endpoints should allow to add\update fields:
 'addlIPAddr[addlSubnet]'
 'device42.id'
 ```
+
+4.Unique key for “Computer” and “NetworkDevice” : `logical.name`
+
 
 # Run
 ```

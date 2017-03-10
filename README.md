@@ -13,7 +13,7 @@ Take the file `conf.sample` and rename it to `conf`. Then change the settings to
 2.Operator should have access to the REST API. The API should allow “Computer” and “NetworkDevice” access, allowing both ‘add’ and ‘save’ actions
 
 
-3.Both endpoints must allow access to add & update all of the fields listed on this page.
+3.Both endpoints must allow access to add & update all of the fields listed on this page
 ```
 'logical.name'
 'machine.name'

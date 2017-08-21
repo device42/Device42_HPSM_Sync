@@ -24,6 +24,7 @@ class HpsmApi:
     def insert_item(self, data, root, name):
         if not self.dry_run:
             print '\t Insert item %s/%s ' % (self.api_url, name)
+            print '\t %s ' % data
 
         request = urllib2.Request('%s/%s' % (self.api_url, name), json.dumps(data))
         base64string = base64.b64encode('%s:%s' % (self.username, self.password))
@@ -44,7 +45,8 @@ class HpsmApi:
         logical_name = data[root]['logical.name'].replace(' ', '%20')
         if not self.dry_run:
             print '\t Update item %s/%s/%s ' % (self.api_url, name, logical_name)
-
+            print '\t %s ' % data
+            
         request = urllib2.Request('%s/%s/%s' % (self.api_url, name, logical_name), json.dumps(data))
         base64string = base64.b64encode('%s:%s' % (self.username, self.password))
         request.add_header("Authorization", "Basic %s" % base64string)

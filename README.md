@@ -7,6 +7,14 @@ Python 3.x
 Device42 16.x.x +
 Service Manager 9.40 +
 
+install python packages with `pip3 install -r requirements.txt`
+```
+certifi==2020.6.20
+chardet==3.0.4
+idna==2.10
+requests==2.24.0
+urllib3==1.25.11
+```
 
 # Setup
 Take the file `conf.sample.cfg` and rename it to `conf.cfg`. Then change the settings to correct ones.

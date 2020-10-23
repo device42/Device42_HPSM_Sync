@@ -1,36 +1,33 @@
 # -*- coding:utf-8 -*-
-import sys  
-
-reload(sys)  
-sys.setdefaultencoding('utf8')
-
-import imp
+import configparser
 import csv
-import StringIO
+from io import StringIO
 from hpsm import HpsmApi
 from device42 import Device42Doql
 
-
-conf = imp.load_source('conf', 'conf')
+config = configparser.ConfigParser()
+config.read('conf.cfg')
 
 device42 = {
-    'host': conf.d42_host,
-    'username': conf.d42_username,
-    'password': conf.d42_password
+    'host': config["Device42"]["d42_host"],
+    'username': config["Device42"]["d42_username"],
+    'password': config["Device42"]["d42_password"],
+    'verify_ssl': config["Device42"].getboolean("d42_verify_ssl")
 }
 
 hpsm = {
-    'host': conf.hpsm_host,
-    'protocol': conf.hpsm_protocol,
-    'port': conf.hpsm_port,
-    'username': conf.hpsm_username,
-    'password': conf.hpsm_password,
-    'api_version': conf.hpsm_api_version
+    'host': config["HPSM"]["hpsm_host"],
+    'protocol': config["HPSM"]["hpsm_protocol"],
+    'port': config["HPSM"]["hpsm_port"],
+    'username': config["HPSM"]["hpsm_username"],
+    'password': config["HPSM"]["hpsm_password"],
+    'api_version': config["HPSM"]["hpsm_api_version"],
+    'verify_ssl': config["HPSM"].getboolean("hpsm_verify_ssl")
 }
 
 options = {
-    'debug': conf.opt_debug,
-    'dry_run': conf.opt_dry_run
+    'debug': config["OPTIONS"].getboolean("opt_debug"),
+    'dry_run': config["OPTIONS"].getboolean("opt_dry_run")
 }
 
 hpsm_rest = HpsmApi(hpsm, options)
@@ -44,40 +41,39 @@ class Integration:
 
     @staticmethod
     def get_d42_devices():
-        f = StringIO.StringIO(device42_doql.get_devices().encode('utf-8'))
+        f = StringIO(device42_doql.get_devices())
         devices = []
         for item in csv.DictReader(f, delimiter=','):
             devices.append(item)
-
         return devices
 
     @staticmethod
     def get_d42_hardware(hw_id):
-        f = StringIO.StringIO(device42_doql.get_hardware(hw_id).encode('utf-8'))
+        f = StringIO(device42_doql.get_hardware(hw_id))
         for item in csv.DictReader(f, delimiter=','):
             return item
 
     @staticmethod
     def get_d42_vendor(vn_id):
-        f = StringIO.StringIO(device42_doql.get_vendor(vn_id).encode('utf-8'))
+        f = StringIO(device42_doql.get_vendor(vn_id))
         for item in csv.DictReader(f, delimiter=','):
             return item
 
     @staticmethod
     def get_d42_os(os_id):
-        f = StringIO.StringIO(device42_doql.get_os(os_id).encode('utf-8'))
+        f = StringIO(device42_doql.get_os(os_id))
         for item in csv.DictReader(f, delimiter=','):
             return item
 
     @staticmethod
     def get_d42_subnet(subnet_id):
-        f = StringIO.StringIO(device42_doql.get_subnet(subnet_id).encode('utf-8'))
+        f = StringIO(device42_doql.get_subnet(subnet_id))
         for item in csv.DictReader(f, delimiter=','):
             return item
 
     @staticmethod
     def get_d42_macs(device_id):
-        f = StringIO.StringIO(device42_doql.get_macs(device_id).encode('utf-8'))
+        f = StringIO(device42_doql.get_macs(device_id))
         macs = []
         for item in csv.DictReader(f, delimiter=','):
             macs.append(item)
@@ -86,7 +82,7 @@ class Integration:
 
     @staticmethod
     def get_d42_ips(device_id):
-        f = StringIO.StringIO(device42_doql.get_ips(device_id).encode('utf-8'))
+        f = StringIO(device42_doql.get_ips(device_id))
         ips = []
         for item in csv.DictReader(f, delimiter=','):
             ips.append(item)
@@ -97,11 +93,13 @@ class Integration:
 def main():
     integration = Integration()
     devices = integration.get_d42_devices()
+
     hpsm_computers = hpsm_rest.get_d42_items('computers', 'computer')
     hpsm_networkdevices = hpsm_rest.get_d42_items('networkdevices', 'networkcomponents')
 
     hpsm_d42_computers = []
     hpsm_d42_networkdevices = []
+
     if 'content' in hpsm_computers:
         hpsm_computers = hpsm_computers['content']
         hpsm_d42_computers = {str(x['Computer']['device42.id']): x['Computer'] for x
@@ -149,6 +147,7 @@ def main():
                     break
 
         device['name'] = device['name'].replace('/', '_')
+
         hpsm_rest.insert_item({
             root: {
                 'logical.name': device['name'],
@@ -193,6 +192,7 @@ def main():
                 }
             }, root, endpoint)
 
+
 if __name__ == '__main__':
     main()
-    print '\n Finished'
+    print('\n Finished')

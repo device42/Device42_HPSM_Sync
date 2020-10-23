@@ -12,6 +12,7 @@ class HpsmApi:
         self.protocol = config['protocol']
         self.port = config['port']
         self.api_version = config['api_version']
+        self.verify_ssl = config['verify_ssl']
         self.debug = options['debug']
         self.dry_run = options['dry_run']
         self.api_url = '%s://%s:%s/SM/%s/rest' % (self.protocol, self.host, self.port, self.api_version)
@@ -64,7 +65,7 @@ class HpsmApi:
             'Content-Type': 'application/json'
         }
 
-        r = requests.get('%s/%s/?type=%s&view=expand' % (self.api_url, obj_type, name), auth=HTTPBasicAuth(self.username, self.password), headers=headers, verify=False)
+        r = requests.get('%s/%s/?type=%s&view=expand' % (self.api_url, obj_type, name), auth=HTTPBasicAuth(self.username, self.password), headers=headers, verify=self.verify_ssl)
 
         body = r.text
         json_object = json.loads(body)

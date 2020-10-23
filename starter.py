@@ -21,7 +21,8 @@ hpsm = {
     'port': config["HPSM"]["hpsm_port"],
     'username': config["HPSM"]["hpsm_username"],
     'password': config["HPSM"]["hpsm_password"],
-    'api_version': config["HPSM"]["hpsm_api_version"]
+    'api_version': config["HPSM"]["hpsm_api_version"],
+    'verify_ssl': config["HPSM"].getboolean("hpsm_verify_ssl")
 }
 
 options = {

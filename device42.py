@@ -1,10 +1,6 @@
-import base64
-import urllib2
-import ssl
-
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
+import sys
+import requests
+from requests.auth import HTTPBasicAuth
 
 
 class Device42Doql:
@@ -16,25 +12,29 @@ class Device42Doql:
         self.dry_run = options['dry_run']
 
     def _getter(self, url):
-        request = urllib2.Request(url)
-        base64string = base64.b64encode('%s:%s' % (self.username, self.password))
-        request.add_header("Authorization", "Basic %s" % base64string)
-        request.add_header("Content-Type", "application/json")
-        r = urllib2.urlopen(request, context=ctx)
-        body = r.read()
-        r.close()
+        headers = {
+            'Content-Type': "application/json"
+        }
+
+        try:
+            r = requests.get(url, auth=HTTPBasicAuth(self.username, self.password), headers=headers, verify=False)
+            resp = r.text
+        except Exception as e:
+            print(e)
+            resp = ""
+
 
         if self.debug:
-            msg1 = 'Status code: %s' % str(r.code)
-            msg2 = str(r.msg.encode('utf-8'))
+            msg1 = 'Status code: %s' % str(r.status_code)
+            msg2 = str(r.text.encode('utf-8'))
 
-            print '\n\t----------- GET FUNCTION -----------'
-            print '\t' + url
-            print '\t' + msg1
-            print '\t' + msg2
-            print '\t------- END OF GET FUNCTION -------\n'
+            print('\n\t----------- GET FUNCTION -----------')
+            print('\t' + url)
+            print('\t' + msg1)
+            print('\t' + msg2)
+            print('\t------- END OF GET FUNCTION -------\n')
 
-        return body
+        return resp
 
     def get_devices(self):
         url = 'https://%s/services/data/v1.0/query/?query=SELECT ' \
@@ -44,7 +44,7 @@ class Device42Doql:
               'FROM view_device_v1&header=yes' % self.host
         msg = '\tGet request to %s ' % url
         if not self.dry_run:
-            print msg
+            print(msg)
         return self._getter(url)
 
     def get_hardware(self, value):
@@ -55,7 +55,7 @@ class Device42Doql:
               % (self.host, value)
         msg = '\tGet request to %s ' % url
         if not self.dry_run:
-            print msg
+            print(msg)
         return self._getter(url)
 
     def get_vendor(self, value):
@@ -66,7 +66,7 @@ class Device42Doql:
               % (self.host, value)
         msg = '\tGet request to %s ' % url
         if not self.dry_run:
-            print msg
+            print(msg)
 
         return self._getter(url)
 
@@ -78,7 +78,7 @@ class Device42Doql:
               % (self.host, value)
         msg = '\tGet request to %s ' % url
         if not self.dry_run:
-            print msg
+            print(msg)
         return self._getter(url)
 
     def get_subnet(self, value):
@@ -89,7 +89,7 @@ class Device42Doql:
               % (self.host, value)
         msg = '\tGet request to %s ' % url
         if not self.dry_run:
-            print msg
+            print(msg)
         return self._getter(url)
 
     def get_macs(self, value):
@@ -100,7 +100,7 @@ class Device42Doql:
               % (self.host, value)
         msg = '\tGet request to %s ' % url
         if not self.dry_run:
-            print msg
+            print(msg)
         return self._getter(url)
 
     def get_ips(self, value):
@@ -111,7 +111,7 @@ class Device42Doql:
               % (self.host, value)
         msg = '\tGet request to %s ' % url
         if not self.dry_run:
-            print msg
+            print(msg)
         return self._getter(url)
 
 

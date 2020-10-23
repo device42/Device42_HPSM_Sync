@@ -17,11 +17,11 @@ class HpsmApi:
         self.api_url = '%s://%s:%s/SM/%s/rest' % (self.protocol, self.host, self.port, self.api_version)
 
     def insert_item(self, data, root, name):
-        if self.dry_run == 'True':
+        if self.dry_run:
             print('--------- Dry Run ---------')
             print('\t Insert item %s/%s ' % (self.api_url, name))
             print('\t %s ' % data)
-        elif self.dry_run == 'False':
+        else:
             try:
                 headers = {
                     'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ class HpsmApi:
                 body = r.text
                 json_object = json.loads(body)
 
-                if self.debug == "True":
+                if self.debug:
                     print(json_object)
             except Exception as e:
                 print(e)
@@ -40,10 +40,10 @@ class HpsmApi:
 
     def update_item(self, data, root, name):
         logical_name = data[root]['logical.name'].replace(' ', '%20')
-        if self.dry_run == 'True':
+        if self.dry_run:
             print('\t Update item %s/%s/%s ' % (self.api_url, name, logical_name))
             print('\t %s ' % data)
-        elif self.dry_run == 'False':
+        else:
             headers = {
                 'Content-Type': 'application/json'
             }
@@ -53,11 +53,11 @@ class HpsmApi:
             body = r.text
             json_object = json.loads(body)
 
-            if self.debug == "True":
+            if self.debug:
                 print(json_object)
 
     def get_d42_items(self, obj_type, name):
-        if self.debug == 'True':
+        if self.debug:
             print('\t Get Device42 Items %s/%s ' % (self.api_url, name))
 
         headers = {
@@ -69,7 +69,7 @@ class HpsmApi:
         body = r.text
         json_object = json.loads(body)
 
-        if self.debug == "True":
+        if self.debug:
             print(json_object)
 
         return json_object

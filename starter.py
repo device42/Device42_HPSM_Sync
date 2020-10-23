@@ -12,7 +12,7 @@ device42 = {
     'host': config["Device42"]["d42_host"],
     'username': config["Device42"]["d42_username"],
     'password': config["Device42"]["d42_password"],
-    'verify_ssl': config["Device42"]["d42_verify_ssl"]
+    'verify_ssl': config["Device42"].getboolean("d42_verify_ssl")
 }
 
 hpsm = {
@@ -25,8 +25,8 @@ hpsm = {
 }
 
 options = {
-    'debug': config["OPTIONS"]["opt_debug"],
-    'dry_run': config["OPTIONS"]["opt_dry_run"]
+    'debug': config["OPTIONS"].getboolean("opt_debug"),
+    'dry_run': config["OPTIONS"].getboolean("opt_dry_run")
 }
 
 hpsm_rest = HpsmApi(hpsm, options)

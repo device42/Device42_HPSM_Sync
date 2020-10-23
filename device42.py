@@ -17,10 +17,11 @@ class Device42Doql:
         }
 
         try:
-            r = requests.get(url, auth=HTTPBasicAuth(self.username, self.password), headers=headers, verify=self.verify_ssl)
+            r = requests.get(url, auth=HTTPBasicAuth(self.username, self.password), headers=headers,
+                             verify=self.verify_ssl)
             resp = r.text
 
-            if self.debug == "True":
+            if self.debug:
                 msg1 = 'Status code: %s' % str(r.status_code)
                 msg2 = str(r.text.encode('utf-8'))
 
@@ -43,7 +44,7 @@ class Device42Doql:
               'asset_no, serial_no, notes, os_version_no, os_fk, hardware_fk ' \
               'FROM view_device_v1&header=yes' % self.host
         msg = '\tGet request to %s ' % url
-        if self.debug == 'True':
+        if self.debug:
             print("----- Get Devices ----- ")
             print(msg)
         return self._getter(url)
@@ -55,7 +56,7 @@ class Device42Doql:
               "WHERE hardware_pk='%s'&header=yes" \
               % (self.host, value)
         msg = '\tGet request to %s ' % url
-        if self.debug == 'True':
+        if self.debug:
             print("----- Get Hardware ----- ")
             print(msg)
         return self._getter(url)
@@ -67,7 +68,7 @@ class Device42Doql:
               "WHERE vendor_pk='%s'&header=yes" \
               % (self.host, value)
         msg = '\tGet request to %s ' % url
-        if self.debug == 'True':
+        if self.debug:
             print("----- Get Vendor ----- ")
             print(msg)
 
@@ -80,7 +81,7 @@ class Device42Doql:
               "WHERE os_pk='%s'&header=yes" \
               % (self.host, value)
         msg = '\tGet request to %s ' % url
-        if self.debug == 'True':
+        if self.debug:
             print("----- Get OS ----- ")
             print(msg)
         return self._getter(url)
@@ -92,7 +93,7 @@ class Device42Doql:
               "WHERE subnet_pk='%s'&header=yes" \
               % (self.host, value)
         msg = '\tGet request to %s ' % url
-        if self.debug == 'True':
+        if self.debug:
             print("----- Get Subnet Name ----- ")
             print(msg)
         return self._getter(url)
@@ -104,7 +105,7 @@ class Device42Doql:
               "WHERE device_fk='%s' and hwaddress != ''&header=yes" \
               % (self.host, value)
         msg = '\tGet request to %s ' % url
-        if self.debug == 'True':
+        if self.debug:
             print("----- Get MAC ----- ")
             print(msg)
         return self._getter(url)
@@ -116,7 +117,7 @@ class Device42Doql:
               "WHERE device_fk='%s'&header=yes" \
               % (self.host, value)
         msg = '\tGet request to %s ' % url
-        if self.debug == 'True':
+        if self.debug:
             print("----- Get IPS ----- ")
             print(msg)
         return self._getter(url)

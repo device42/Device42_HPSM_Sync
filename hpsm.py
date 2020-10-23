@@ -29,7 +29,7 @@ class HpsmApi:
                 }
 
                 r = requests.post('%s/%s' % (self.api_url, name), auth=HTTPBasicAuth(self.username, self.password),
-                                  headers=headers, payload=json.dumps(data))
+                                  headers=headers, payload=json.dumps(data), verify=self.verify_ssl)
                 body = r.text
                 json_object = json.loads(body)
 
@@ -50,7 +50,7 @@ class HpsmApi:
             }
 
             r = requests.put('%s/%s/%s' % (self.api_url, name, logical_name),
-                             auth=HTTPBasicAuth(self.username, self.password), headers=headers, payload=json.dumps(data))
+                             auth=HTTPBasicAuth(self.username, self.password), headers=headers, payload=json.dumps(data), verify=self.verify_ssl)
             body = r.text
             json_object = json.loads(body)
 
